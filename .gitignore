@@ -1,0 +1,4 @@
+*.hi
+*.o
+/emblems
+/list-emblems
