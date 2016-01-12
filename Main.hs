@@ -14,6 +14,7 @@ data Options = Options
     { argFiles   :: [String]
     , optAdd     :: [String]
     , optDelete  :: [String]
+    , optList    :: Bool
     , optVerbose :: Bool
     } deriving (Show, Data, Typeable)
 
@@ -21,7 +22,8 @@ options = Options
     { argFiles      =    [] &= args                       &= typ "FILE ..."
     , optAdd        =    [] &= name "add"     &= name "a" &= typ "EMBLEM,EMBLEM,.." &= explicit &= help "Emblems to add"
     , optDelete     =    [] &= name "delete"  &= name "d" &= typ "EMBLEM,EMBLEM,.." &= explicit &= help "Emblems to delete"
-    , optVerbose    = False &= name "verbose" &= name "v"                                       &= help "Verbose output"
+    , optList       = False &= name "list"    &= name "l"                           &= explicit &= help "List possible emblems"
+    , optVerbose    = False &= name "verbose" &= name "v"                           &= explicit &= help "Verbose output"
     }   &= program "emblems"
         &= summary "Manipulate file emblems"
         &= versionArg [summary "emblems 1.0"]
@@ -40,6 +42,8 @@ main = do
         verbose = optVerbose args || null adds && null dels
         adjust = (`union` adds) . (\\ dels) . nub
     emblemsInit
+    when (optList args) $
+        mapM_ putStrLn  . sort =<< allEmblems
     forM_ (argFiles args) $ \fn -> do
         adjustEmblems adjust fn
         when verbose $
