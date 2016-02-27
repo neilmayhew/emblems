@@ -1,2 +1,9 @@
-{ nixpkgs ? import <nixpkgs> {}, compiler ? "ghc7102" }:
-nixpkgs.pkgs.haskell.packages.${compiler}.callPackage ./emblems.nix { }
+{ nixpkgs ? import <nixpkgs> {}, compiler ? "default" }:
+  let
+    inherit (nixpkgs) pkgs;
+
+    haskellPackages = if compiler == "default"
+                         then pkgs.haskellPackages
+                         else pkgs.haskell.packages.${compiler};
+  in
+    haskellPackages.callPackage ./emblems.nix { }
