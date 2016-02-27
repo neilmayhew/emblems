@@ -49,6 +49,7 @@ main = do
         when verbose $
             putStrLn . printf "%s: %s" fn . intercalate "," =<< getEmblems fn
 
+split :: Eq a => a -> [a] -> [[a]]
 split _ [] = []
 split c s  = h : split c (drop 1 t)
   where (h, t) = break (== c) s

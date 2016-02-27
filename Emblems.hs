@@ -7,8 +7,10 @@ import System.GIO.File.File
 import System.GIO.File.FileInfo
 import Graphics.UI.Gtk (initGUI, iconThemeGetDefault, iconThemeListIcons)
 
+emblemsInit :: IO [String]
 emblemsInit = initGUI
 
+adjustEmblems :: ([String] -> [String]) -> FilePath -> IO ()
 adjustEmblems adjust filename = do
     let f = fileFromCommandlineArg $ fromString filename
     i <- fileQueryInfo f "metadata::emblems" [] Nothing
@@ -18,11 +20,13 @@ adjustEmblems adjust filename = do
     fileInfoSetAttributeStringList i' "metadata::emblems" es'
     fileSetAttributesFromInfo f i' [] Nothing
 
+getEmblems :: FilePath -> IO [String]
 getEmblems filename = do
     let f = fileFromCommandlineArg $ fromString filename
     i <- fileQueryInfo f "metadata::emblems" [] Nothing
     fileInfoGetAttributeStringList i "metadata::emblems"
 
+allEmblems :: IO [String]
 allEmblems = do
     iconThemeGetDefault
         >>= flip iconThemeListIcons (Just "Emblems")
