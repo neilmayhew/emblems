@@ -13,5 +13,6 @@ cabal-version:       >=1.10
 executable emblems
   main-is:             Main.hs
   other-extensions:    DeriveDataTypeable
-  build-depends:       base >=4.8 && <4.9, bytestring >=0.10 && <0.11, cmdargs, gio, gtk
+  build-depends:       base >=4.8 && <4.9, bytestring >=0.10 && <0.11,
+                       utf8-string >=0.3, cmdargs, gio, gtk
   default-language:    Haskell2010

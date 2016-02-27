@@ -1,8 +1,8 @@
 module Emblems where
 
-import Data.ByteString.Char8 (pack)
 import Data.List
 import Data.Maybe
+import Data.ByteString.UTF8 as UTF8 (fromString)
 import System.GIO.File.File
 import System.GIO.File.FileInfo
 import Graphics.UI.Gtk (initGUI, iconThemeGetDefault, iconThemeListIcons)
@@ -10,7 +10,7 @@ import Graphics.UI.Gtk (initGUI, iconThemeGetDefault, iconThemeListIcons)
 emblemsInit = initGUI
 
 adjustEmblems adjust filename = do
-    let f = fileFromCommandlineArg $ pack filename
+    let f = fileFromCommandlineArg $ fromString filename
     i <- fileQueryInfo f "metadata::emblems" [] Nothing
     es <- fileInfoGetAttributeStringList i "metadata::emblems"
     let es' = adjust es
@@ -19,7 +19,7 @@ adjustEmblems adjust filename = do
     fileSetAttributesFromInfo f i' [] Nothing
 
 getEmblems filename = do
-    let f = fileFromCommandlineArg $ pack filename
+    let f = fileFromCommandlineArg $ fromString filename
     i <- fileQueryInfo f "metadata::emblems" [] Nothing
     fileInfoGetAttributeStringList i "metadata::emblems"
 
