@@ -41,10 +41,10 @@ main = do
         dels    = concatMap (split ',') (optDelete args)
         verbose = optVerbose args || null adds && null dels
         adjust = (`union` adds) . (\\ dels) . nub
-    emblemsInit
+    files <- withArgs (argFiles args) emblemsInit -- Allow GTK options to be given (after --)
     when (optList args) $
         mapM_ putStrLn  . sort =<< allEmblems
-    forM_ (argFiles args) $ \fn -> do
+    forM_ files $ \fn -> do
         adjustEmblems adjust fn
         when verbose $
             putStrLn . printf "%s: %s" fn . intercalate "," =<< getEmblems fn

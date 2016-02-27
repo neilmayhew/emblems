@@ -8,7 +8,7 @@ import System.GIO.File.FileInfo
 import Graphics.UI.Gtk (initGUI, iconThemeGetDefault, iconThemeListIcons)
 
 emblemsInit :: IO [String]
-emblemsInit = initGUI
+emblemsInit = initGUI -- returns the unused cmdline args
 
 adjustEmblems :: ([String] -> [String]) -> FilePath -> IO ()
 adjustEmblems adjust filename = do
