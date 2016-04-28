@@ -1,5 +1,6 @@
 module Emblems where
 
+import Control.Monad (when)
 import Data.List
 import Data.Maybe
 import Data.ByteString.UTF8 as UTF8 (fromString)
@@ -12,19 +13,23 @@ emblemsInit = initGUI -- returns the unused cmdline args
 
 adjustEmblems :: ([String] -> [String]) -> FilePath -> IO ()
 adjustEmblems adjust filename = do
-    let f = fileFromCommandlineArg $ fromString filename
-    i <- fileQueryInfo f "metadata::emblems" [] Nothing
-    es <- fileInfoGetAttributeStringList i "metadata::emblems"
+    es <- getEmblems filename
     let es' = adjust es
-    i' <- fileQueryInfo f "metadata::emblems" [] Nothing
-    fileInfoSetAttributeStringList i' "metadata::emblems" es'
-    fileSetAttributesFromInfo f i' [] Nothing
+    when (es' /= es) $
+        setEmblems filename es'
 
 getEmblems :: FilePath -> IO [String]
 getEmblems filename = do
     let f = fileFromCommandlineArg $ fromString filename
     i <- fileQueryInfo f "metadata::emblems" [] Nothing
     fileInfoGetAttributeStringList i "metadata::emblems"
+
+setEmblems :: FilePath -> [String] -> IO ()
+setEmblems filename es = do
+    let f = fileFromCommandlineArg $ fromString filename
+    i <- fileQueryInfo f "metadata::emblems" [] Nothing
+    fileInfoSetAttributeStringList i "metadata::emblems" es
+    fileSetAttributesFromInfo f i [] Nothing
 
 allEmblems :: IO [String]
 allEmblems = do
