@@ -14,6 +14,6 @@ executable emblems
   main-is:             Main.hs
   other-modules:       Emblems
   other-extensions:    DeriveDataTypeable
-  build-depends:       base >=4.8 && <4.13, bytestring >=0.10 && <0.11,
+  build-depends:       base >=4.8 && <5, bytestring >=0.10 && <0.11,
                        utf8-string >=0.3, cmdargs, gio, gtk3
   default-language:    Haskell2010
