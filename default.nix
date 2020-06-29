@@ -1,10 +1,10 @@
-{ stdenv, mkDerivation, base, bytestring, utf8-string, cmdargs, gio, gtk3
+{ stdenv, lib, mkDerivation, base, bytestring, utf8-string, cmdargs, gio, gtk3
 }:
 
 mkDerivation {
   pname = "emblems";
   version = "0.1.0.0";
-  src = ./.;
+  src = lib.cleanSource ./.;
   isLibrary = false;
   isExecutable = true;
   executableHaskellDepends = [ base bytestring utf8-string cmdargs gio gtk3 ];
